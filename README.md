@@ -73,7 +73,7 @@ EOF
 ```
 - 启动服务
 ```shell
-systemctl start emboy_bot
+systemctl start emby_bot
 ```
 
 - 设置开机启动
