@@ -68,6 +68,48 @@ status = on_command(
 total = on_command(
     "total"
     )
+checkserver =on_command(
+    "checkserver"
+    )
+@checkserver.handle()
+async def _(event: MessageEvent, message: Message = CommandArg()):
+    parse_mode = 'Markdown'
+    db = pymysql.connect(host=dbhost, user=dbuser,password=dbpassword,db=dbname )
+    cursor = db.cursor()
+    bot = get_bot()
+    user_id = int(event.get_user_id())
+    chat_id = event.chat.id
+    message_id = event.message_id
+    await bot.delete_message(chat_id=chat_id, message_id=message_id)
+    if chat_id == user_id:
+        await bot.send_message(chat_id=user_id, text="私聊无效，请在内部群发送命令")
+        await checkserver.finish()
+    if chat_id not in chat_id_list:
+        await bot.send_message(chat_id=chat_id, text="当前群组非内部群，禁止查询")
+        await checkserver.finish()
+    sql1 = "SELECT name, url1, url2, username, password FROM severs"
+    db.ping(reconnect=True)
+    cursor.execute(sql1)
+    results1 = cursor.fetchall()
+    b = ""
+    for i in results1:
+        b += f'公益服名称：' + i[0] + f'\n网址：' + i[1] + f' ' + i[2]  + f'\n用户名：' + i[3] + f'\n密码：' + i[4] + f'\n\n'
+    cursor.close()
+    db.close()
+    msg = '本群其余公益服信息如下：\n\n' + b + '\n\n客户端下载地址：https://t.me/c/1427595637/244167\n(本消息10秒后将自动删除)'
+    # if user_id == 459180203:
+    #     await bot.send_message(chat_id=chat_id, text = msg, parse_mode=parse_mode)
+    #     await checkserver.finish()
+    # 暂时下线改命令代码开始处
+    # await bot.send_message(chat_id=chat_id, text="功能暂时下线")
+    # await checkserver.finish()
+    # 暂时下线改命令代码结束处
+    msg1 = await bot.send_message(chat_id=chat_id, text = msg, parse_mode=parse_mode)
+    msg2 = msg1["result"]["message_id"]
+    time.sleep(10)
+    await bot.delete_message(chat_id=chat_id, message_id=msg2)
+    await checkserver.finish()
+
 
 @total.handle()
 async def _(event: MessageEvent, message: Message = CommandArg()):
