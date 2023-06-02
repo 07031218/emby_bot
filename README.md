@@ -10,7 +10,7 @@
 - 拉取项目
 
 ```shell
-git clone https://github.com/07031218/embybot.git && cd embybot
+git clone https://github.com/07031218/emby_bot.git && cd emby_bot
 ```
 
 - 修改项目根目录的`.env`文件，填写TG机器人的API-TOKEN；
@@ -24,10 +24,13 @@ git clone https://github.com/07031218/embybot.git && cd embybot
 - 完成以上动作之后，执行python3 bot.py启动机器人
 
 ## 机器人指令大全：
+- `/add_code` - 添加公益服邀请码
+
+- `/invite` - 通过邀请码注册账号
 
 - `/create` - 注册公益服账户
 
-- `/check` - 查询公益服用户名
+- `/account` - 查询公益服用户名
 
 - `/reset` - 重置公益服密码
 
@@ -43,21 +46,24 @@ git clone https://github.com/07031218/embybot.git && cd embybot
 
 - `/checkserver` - 查询群友公益服信息
 
-- `/status` - 查询公益服负载情况
+- `/status` - 查询公益服负载情况（需要配合哪吒探针自行修改对应代码，代码在checkname.py文件中）
+
+- `/total` - 查询公益服影片数量
+
 
 ## 机器人进程守护可通过添加systemd服务来实现
 
 ```shell
-cat >/etc/systemd/system/embybot.service <<EOF
+cat >/etc/systemd/system/emby_bot.service <<EOF
 [Unit]
-Description=embybot
+Description=emby_bot
 After=rc-local.service
 
 [Service]
 Type=simple
 User=root
 Group=root
-WorkingDirectory=/root/embtbot/ # 填写embybot目录路径
+WorkingDirectory=/root/emby_bot/ # 填写embybot目录路径
 ExecStart=/usr/bin/python3 bot.py
 Restart=always
 
@@ -67,14 +73,14 @@ EOF
 ```
 - 启动服务
 ```shell
-systemctl start emboybot
+systemctl start emboy_bot
 ```
 
 - 设置开机启动
 ```shell
-systemctl enable embybot
+systemctl enable emby_bot
 ```
 - 机器人运行状态查看
 ```shell
-systemctl status embybot
+systemctl status emby_bot
 ```
