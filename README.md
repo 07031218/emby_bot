@@ -26,9 +26,11 @@ git clone https://github.com/07031218/emby_bot.git && cd emby_bot
 ## 机器人指令大全：
 - `/add_code` - 添加公益服邀请码
 
+- `/invite` - 通过邀请码注册账号
+
 - `/create` - 注册公益服账户
 
-- `/check` - 查询公益服用户名
+- `/account` - 查询公益服用户名
 
 - `/reset` - 重置公益服密码
 
@@ -44,7 +46,7 @@ git clone https://github.com/07031218/emby_bot.git && cd emby_bot
 
 - `/checkserver` - 查询群友公益服信息
 
-- `/status` - 查询公益服负载情况
+- `/status` - 查询公益服负载情况（需要配合哪吒探针自行修改对应代码，代码在checkname.py文件中）
 
 - `/total` - 查询公益服影片数量
 
