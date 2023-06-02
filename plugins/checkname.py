@@ -322,11 +322,22 @@ async def check1(event: MessageEvent, message: Message = CommandArg()):
 
             response = requests.get(embyserver + '/emby/Users/' + id, params=params, headers=headers)
             id1 = re.findall(r'"(.*?)"', response.text)
+            rr = json.loads(response.text)
+            account_check = rr["Policy"]["IsDisabled"]
+            if account_check:
+                account_status = "已禁用"
+            else:
+                account_status = "正常"
             lastlogindate = str(id1[14])
             if lastlogindate == "PlayDefaultAudioTrack":
-                lastlogindate = "⚠️ 注册至今，您从未登录过，您的账户随时可能被清理。"
+                lastlogindate = "⚠️ 注册至今，您从未登录过，您的账户随时可能被清理[白名单用户除外]。"
             else:
                 lastlogindate = id1[16]
+                # 开始将Emby获取的活动时间进行格式化为背景时间，格式为:%Y-%m-%d %H:%M:%S
+                dt = datetime.strptime(lastlogindate[:26], "%Y-%m-%dT%H:%M:%S.%f")
+                beijing_tz = pytz.timezone('Asia/Shanghai')
+                beijing_time = dt.replace(tzinfo=pytz.utc).astimezone(beijing_tz)
+                lastlogindate = beijing_time.strftime("%Y-%m-%d %H:%M:%S")
             sql1 = "SELECT * FROM line"
             db.ping(reconnect=True)
             cursor.execute(sql1)
@@ -334,11 +345,24 @@ async def check1(event: MessageEvent, message: Message = CommandArg()):
             b = ""
             for i in results1:
                 b += i[2] + f'：' + i[1] +f'\n'
-            msg = '你的用户名是：`' + username + '`\n账户注册时间：`' + create_time +'`\n最后活动时间：`' + lastlogindate + '`\n公益服网址：\n' + b
+            white_yn = results[0][6]
+            if white_yn ==1:
+                account_attribute = "白名单用户"
+            else:
+                account_attribute = "普通用户"
+            msg = f'你的用户名是：`{username}`\n账户属性：`{account_attribute} `\n账户状态：`{account_status}`\n账户注册时间：`{create_time}`\n最后活动时间：`{lastlogindate} `\n公益服网址：\n{b}'
             msg1 = await bot.send_message(chat_id=chat_id, text = msg, parse_mode=parse_mode)
+            # msg2 = msg1["result"]["message_id"]
+            # time.sleep(10)
+            # await bot.delete_message(chat_id=chat_id, message_id=msg3)
+            # await bot.delete_message(chat_id=chat_id, message_id=msg2)
             await check.finish()
         else:
             msg1 = await bot.send_message(chat_id=chat_id, text='您未注册过Emby账户。')
+            # msg2 = msg1["result"]["message_id"]
+            # time.sleep(10)
+            # await bot.delete_message(chat_id=chat_id, message_id=msg3)
+            # await bot.delete_message(chat_id=chat_id, message_id=msg2)
             await check.finish()
         db.close()
     except:
