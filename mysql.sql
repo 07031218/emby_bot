@@ -1,115 +1,57 @@
--- phpMyAdmin SQL Dump
--- version 4.9.0.1
--- https://www.phpmyadmin.net/
---
--- 主机： localhost
--- 生成日期： 2022-06-14 19:10:58
--- 服务器版本： 10.1.23-MariaDB
--- PHP 版本： 7.2.22
+-- Adminer 4.8.1 MySQL 8.0.33 dump
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+SET NAMES utf8mb4;
+
+CREATE DATABASE `emby` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `emby`;
+
+DROP TABLE IF EXISTS `invite`;
+CREATE TABLE `invite` (
+  `number` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL,
+  PRIMARY KEY (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- 数据库： `test`
---
-CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `test`;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `line`
---
-
+DROP TABLE IF EXISTS `line`;
 CREATE TABLE `line` (
-  `number` int(11) NOT NULL,
+  `number` int NOT NULL AUTO_INCREMENT,
   `url` text NOT NULL,
-  `remarks` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `remarks` text NOT NULL,
+  PRIMARY KEY (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `severs`
---
 
+DROP TABLE IF EXISTS `severs`;
 CREATE TABLE `severs` (
-  `number` int(11) NOT NULL,
+  `number` int NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `url1` text NOT NULL,
   `url2` text NOT NULL,
   `username` text NOT NULL,
-  `password` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `password` text NOT NULL,
+  PRIMARY KEY (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- 表的结构 `users`
---
-
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `number` int(11) NOT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `id` varchar(255) DEFAULT NULL,
-  `create_time` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `number` int NOT NULL AUTO_INCREMENT,
+  `tg_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `create_time` datetime NOT NULL,
+  `white` int(1) unsigned zerofill DEFAULT '0',
+  PRIMARY KEY (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- 转储表的索引
---
 
---
--- 表的索引 `line`
---
-ALTER TABLE `line`
-  ADD PRIMARY KEY (`number`);
 
---
--- 表的索引 `severs`
---
-ALTER TABLE `severs`
-  ADD PRIMARY KEY (`number`);
-
---
--- 表的索引 `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`number`);
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `line`
---
-ALTER TABLE `line`
-  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- 使用表AUTO_INCREMENT `severs`
---
-ALTER TABLE `severs`
-  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- 使用表AUTO_INCREMENT `users`
---
-ALTER TABLE `users`
-  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- 2023-06-02 06:17:15
